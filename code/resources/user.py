@@ -23,8 +23,8 @@ class User(Resource):
         user = UserModel.find_by_phone(credentials['phone'])
         if user:
             return {
-                'message':'Registration failed! An account with phone<{}> already exists.'
-                            .format(credentials['phone'])
+                'message':'Account <{}> already exists.'
+                .format(credentials['phone'])
                     }, 400
 
         user = UserModel(None,**credentials)
@@ -33,7 +33,7 @@ class User(Resource):
             user.save_to_db()
         except:
             return { 'message': 'Internal Server Error, registration failed!' }, 500
-        return { 'user': user.json() }, 201
+        return user.json(), 201
 
 class UserUpdate(Resource):
     parser = reqparse.RequestParser()
