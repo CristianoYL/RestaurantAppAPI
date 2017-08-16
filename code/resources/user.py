@@ -1,7 +1,7 @@
 from flask_restful import Resource,reqparse
 from werkzeug.security import safe_str_cmp
 from flask_jwt import jwt_required,current_identity
-import requests, traceback
+import traceback
 
 from models.user import UserModel
 
