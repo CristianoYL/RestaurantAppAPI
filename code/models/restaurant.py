@@ -39,7 +39,6 @@ class RestaurantModel(db.Model):
             'openTime': self.openTime,
             'closeTime': self.closeTime,
             'isOpen': self.isOpen,
-            'isOpen': self.logo,
             'logo': self.logo,
             'promo': self.promo,
             'phone': self.phone
