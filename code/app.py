@@ -23,7 +23,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL','sqlite://
 ######################################################################
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = 'restaurant_secret_key'
+app.secret_key = 'restaurant_secret_key_fawnfioawhfehgljnegehdfauwdhkasnfuwb'
 api = Api(app)
 
 # comment the following section if running on Heroku
@@ -50,4 +50,4 @@ api.add_resource(MenuByID,'/menu/id/<int:id>')
 if __name__ == '__main__' :
     from db import db
     db.init_app(app)
-    app.run(host = '192.168.1.8',port = 5000,debug=True)
+    app.run(host = '192.168.1.9',port = 5000,debug=True)
