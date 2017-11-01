@@ -24,7 +24,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL','sqlite://
 ######################################################################
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = 'restaurant_secret_key_fawnfioawhfehgljnegehdfauwdhkasnfuwb'
+app.secret_key = 'restaurant_secret_key_fawnLioaIhfehFjneGgehdfa05dhka96nfuwb'
 api = Api(app)
 
 # comment the following section if running on Heroku
