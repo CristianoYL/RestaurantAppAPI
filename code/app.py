@@ -50,4 +50,5 @@ api.add_resource(MenuByID,'/menu/id/<int:id>')
 if __name__ == '__main__' :
     from db import db
     db.init_app(app)
-    app.run(host = '192.168.0.102',port = 5000,debug=True)
+    app.run(host = '192.168.0.108',port = 5000,debug=True)
+    # app.run(host = '10.0.5.51',port = 5000,debug=True)
