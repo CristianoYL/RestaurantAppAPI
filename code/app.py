@@ -9,7 +9,7 @@ from security import authenticate, identity
 from resources.user import User,UserUpdate,UserByID
 from resources.restaurant import Restaurant
 from resources.menu import Menu,MenuByID
-from resources.transaction import CreateCustomer, ChargeCustomer, OneTimeCharge
+from resources.transaction import GetEphemeralKey
 
 app = Flask(__name__)
 ####################### DB config ####################################
@@ -46,9 +46,7 @@ api.add_resource(Restaurant,'/restaurant')
 api.add_resource(Menu,'/menu')
 api.add_resource(MenuByID,'/menu/id/<int:id>')
 
-api.add_resource(CreateCustomer, '/transaction/create')
-api.add_resource(ChargeCustomer, '/transaction/charge')
-api.add_resource(OneTimeCharge, '/transaction/onetime')
+api.add_resource(GetEphemeralKey, '/transaction/get_e_key')
 ######################################################################
 
 if __name__ == '__main__' :
