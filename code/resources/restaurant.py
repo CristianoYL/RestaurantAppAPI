@@ -22,7 +22,7 @@ class Restaurant(Resource):
     def post(self): # create a new restaurant
         data = self.parser.parse_args()
         if RestaurantModel.find_by_name(data['name']):
-            return {'message': 'Restaurant {} already exists.'.format(data['name'])},400
+            return {'message': 'Restaurant {} already exists.'.format(data['name'])}, 400
         # else try to create new restaurant
         if data['isOpen'] is None:
             data['isOpen'] = True   # open by default
