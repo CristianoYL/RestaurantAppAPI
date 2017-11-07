@@ -9,7 +9,7 @@ from security import authenticate, identity
 from resources.user import User,UserUpdate,UserByID
 from resources.restaurant import Restaurant
 from resources.menu import Menu,MenuByID
-from resources.transaction import GetEphemeralKey
+from resources.transaction import EphemeralKey
 
 app = Flask(__name__)
 ####################### DB config ####################################
@@ -46,10 +46,10 @@ api.add_resource(Restaurant,'/restaurant')
 api.add_resource(Menu,'/menu')
 api.add_resource(MenuByID,'/menu/id/<int:id>')
 
-api.add_resource(GetEphemeralKey, '/transaction/get_e_key')
+api.add_resource(EphemeralKey, '/transaction/ephemeral_key')
 ######################################################################
 
 if __name__ == '__main__' :
     from db import db
     db.init_app(app)
-    app.run(host = 'localhost',port = 5000,debug=True)
+    app.run(host = '192.168.0.116',port = 5000,debug=True)

@@ -12,8 +12,7 @@ NULL_CUSTOMER_ERROR: 'Customer not yet created'
 INTERNAL_ERROR: 'Internal server error! Failed to {}.'
 SUCCESS = 'Customer sucessfully {}'
 
-stripe.api_key = config.stripe_api_key
-class GetEphemeralKey(Resource):
+class EphemeralKey(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('stripe_api_version', type=str, required=True, help=BLANK_ERROR.format('API version'))
 
@@ -27,11 +26,17 @@ class GetEphemeralKey(Resource):
         if not customer_id:
             return {'message': NULL_CUSTOMER_ERROR}, 404
 
-        ephemeral_key = stripe.EphemeralKey.create(customer=customer_id, api_version=stripe_api_version)
+        stripe.api_key = config.stripe_api_key
+        try:
+            ephemeral_key = stripe.EphemeralKey.create(customer=customer_id, api_version=stripe_api_version)
+        except:
+            traceback.print_exc()
+            return {
+                    'message' : INTERNAL_ERROR
+                        .format("retrieve Stripe Customer info.")
+                    },500
 
         if not ephemeral_key:
             return {'message': NULL_CUSTOMER_ERROR.format('create ephemeral key')}, 404
 
-        return {
-            'ephemeral_key': ephemeral_key
-        }, 200
+        return {'ephemeral_key': ephemeral_key}, 200
