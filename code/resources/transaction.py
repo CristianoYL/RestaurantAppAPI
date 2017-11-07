@@ -35,3 +35,44 @@ class GetEphemeralKey(Resource):
         return {
             'ephemeral_key': ephemeral_key
         }, 200
+
+class CreateCharge(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('source', type=str, required=True, help=BLANK_ERROR.format('source'))
+    parser.add_argument('amount', type=float, required=True, help=BLANK_ERROR.format('source_id'))
+    parser.add_argument('order', type=str, required=True, help=BLANK_ERROR.format('order_id'))
+
+    @jwt_required()
+    data = self.parser.parse_args()
+
+    customer_id = current_identity.stripeID
+    source = data['source']
+    amount = data['amount']
+    order_id = data['order_id']
+
+    try:
+        this_charge = stripe.Charge.create(
+            amount=amount,
+            source=source,
+            currency='usd',
+            metadata={
+                'order_id':order_id
+            }
+        )
+    except:
+        traceback.print_exc()
+        return {
+            'message': INTERNAL_ERROR.format('create charge')
+        }, 200
+
+    # TODO save charge
+
+    '''
+    order = OrderModel.get_by_order_id(order_id)
+    order.charge_id = this_charge.id
+    order.save_to_db()
+    '''
+
+    return {
+        'charge_id': charge.id,
+        }, 200
