@@ -17,7 +17,7 @@ class OrderModel(db.Model):
     menus = db.relationship('Menu', secondary = dishes,
                             backref = db.backref('orders', lazy = 'dynamic'))
 
-    status = closeTime = db.Column(db.String(10))
+    status = db.Column(db.String(10))
     time = db.Column(db.String(10))
     phone = db.Column(db.String(20))
     deliverAddress = db.Column(db.String(200))
@@ -38,7 +38,7 @@ class OrderModel(db.Model):
         return {
             'oid' : self.id,
             'uid' : self.uid,
-            'originalAmount' self.originalAmount,
+            'originalAmount' : self.originalAmount,
             'finalAmount' : self.finalAmount,
             'status': self.status,
             'time' : self.time,
@@ -51,7 +51,7 @@ class OrderModel(db.Model):
         return {
             'oid' : self.id,
             'uid' : self.uid,
-            'originalAmount' self.originalAmount,
+            'originalAmount' : self.originalAmount,
             'finalAmount' : self.finalAmount,
             'status': self.status,
             'time' : self.time,

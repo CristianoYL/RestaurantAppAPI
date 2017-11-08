@@ -8,6 +8,7 @@ from resources.user import User,UserUpdate,UserByID
 from resources.restaurant import Restaurant
 from resources.menu import Menu,MenuByID,MenuByRestaurant
 from resources.transaction import EphemeralKey
+from resources.order import Order,OrderByID
 
 app = Flask(__name__)
 ####################### DB config ####################################
@@ -46,6 +47,9 @@ api.add_resource(MenuByID,'/menu/id/<int:id>')
 api.add_resource(MenuByRestaurant,'/menu/restaurant/<int:rid>')
 
 api.add_resource(EphemeralKey, '/transaction/ephemeral_key')
+
+api.add_resource(Order, '/order')
+api.add_resource(OrderByID, '/order/id/<int:id>')
 ######################################################################
 
 if __name__ == '__main__' :
