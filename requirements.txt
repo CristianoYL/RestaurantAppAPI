@@ -5,4 +5,4 @@ Flask-SQLAlchemy
 uwsgi
 psycopg2
 requests
-Stripe
+stripe
