@@ -1,4 +1,5 @@
 from flask_restful import Resource,reqparse
+from datetime import datetime, timezone
 import traceback
 
 # TODO: order model
@@ -8,7 +9,20 @@ from models.order import OrderModel
 BLANK_ERROR = '{} cannot be null'
 NOT_FOUND_ERROR: 'Order {} not found'
 DUPLICATE_ERROR: 'Duplicate order ID'
-INTERNAL_ERROR: 'Internal server error! Failed to create new order.'
+INTERNAL_ERROR: 'Internal server error! Failed to {}.'
+SUCCESS: 'Order {} successfully paid'
+
+# Utils
+
+def updateOrderStatus(order, status):
+    status = order['status']
+    status.append({
+        'status': status,
+        'time': datetime.now(timezone.utc)
+    })
+
+    order['status'] = status
+
 
 class GetOrder(Resource):
     parser = reqparse.RequestParser()
@@ -24,37 +38,43 @@ class GetOrder(Resource):
         return this_order.json(), 200
 
 class PostOrder(Resource):
+
     parser = reqparse.RequestParser()
-    # parser.add_argument('oid', type=int, required=True, help = BLANK_ERROR.format('Order ID'))
-    parser.add_argument('uid', type=int, required=True, help = BLANK_ERROR.format('User ID'))
-    parser.add_argument('originalAmount', type=int, required=True, help = BLANK_ERROR.format('Original Amount'))
-    parser.add_argument('finalAmount', type=int, required=True, help = BLANK_ERROR.format('Final Amount'))
+    parser.add_argument('order', type=str, required=True, help=BLANK_ERROR.format('Order informaton'))
 
-    # TODO relational way to save menu-id-list
-    parser.add_argument('midList', type=list, required=True, location = 'json', help = BLANK_ERROR.format('Menu List'))
-
-    # PENDING, PAID, FULFILLED etc
-    parser.add_argument('status', type=str, required=True, help = BLANK_ERROR.format('Status'))
-
-    # TODO type of 'time' & phone
-    parser.add_argument('time', type=str, required=True, help = BLANK_ERROR.format('Time'))
-    parser.add_argument('phone', type=str, required=True, help = BLANK_ERROR.format('phone'))
-    parser.add_argument('deliverAddress', type=str, required=True, help = BLANK_ERROR.format('Deliver Address'))
+    @jwt_required()
 
     def post(self):
         data = self.parser.parse_args()
 
-        if OrderModel.find_by_id(data['oid']):
-            return {'message' : DUPLICATE_ERROR}, 400
+        customer_id = current_identity.stripeID
+        order = date['order']
 
-        # TODO exclude some data
-        new_order = OrderModel(None, **data)
-
-        for
+        updateOrderStatus(order, 'pending')
 
         try:
-            new_order.save_to_db()
+            this_charge = stripe.Charge.create(
+                amount = order['total'],
+                source = order['source'],
+                currency = 'usd',
+                metadata = {
+                    'order_id':order['id'],
+                }
+            )
+
+            updateOrderStatus(order, 'paid')
+            order['charge_id']: this_charge
+
         except:
             traceback.print_exc()
-            return {'message': INTERNAL_ERROR},500
-        return order.json(),201
+            updateOrderStatus(order, 'failed')
+
+            return {
+                'message': INTERNAL_ERROR.format('create charge')
+            }, 200
+
+        # TODO save to order model
+
+        return {
+            'message': SUCCESS.format(order['id'])
+            }, 200
