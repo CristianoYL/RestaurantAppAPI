@@ -3,6 +3,8 @@ from datetime import datetime, timezone
 from flask_jwt import jwt_required,current_identity
 import os, config, traceback
 
+stripe.api_key = config.stripe_api_key
+
 # TODO: order model
 from models.order import OrderModel
 
