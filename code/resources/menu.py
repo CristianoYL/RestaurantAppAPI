@@ -14,10 +14,10 @@ class Menu(Resource):
     parser.add_argument('isAvailable', type=bool, required=False)
     parser.add_argument('isRecommended', type=bool, required=False)
 
-    def get(self):
+    def get(self):  # get all menus, for testing only
         return {'menu':[menu.json() for menu in MenuModel.find_all()]},200
 
-    def post(self):
+    def post(self): # post a new menu item
         data = self.parser.parse_args()
         if MenuModel.find_by_name(data['rid'],data['name']):
             return {'message': 'Menu item <{}> already exists for restaurant <{}>!'.format(data['name'],data['rid'])},400
@@ -83,3 +83,9 @@ class MenuByID(Resource):
             traceback.print_exc()
             return {'message':'Internal server error, failed to update menu.'},500
         return menu.json(),200
+
+class MenuByRestaurant(Resource):
+
+    def get(self,rid):
+        menu_list = [menu.json() for menu in MenuModel.find_by_restaurant(rid)]
+        return {'menus':menu_list},200

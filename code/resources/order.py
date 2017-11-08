@@ -23,7 +23,7 @@ class GetOrder(Resource):
 
         return this_order.json(), 200
 
-Class PostOrder(Resource):
+class PostOrder(Resource):
     parser = reqparse.RequestParser()
     # parser.add_argument('oid', type=int, required=True, help = BLANK_ERROR.format('Order ID'))
     parser.add_argument('uid', type=int, required=True, help = BLANK_ERROR.format('User ID'))

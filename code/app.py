@@ -1,20 +1,18 @@
-import os
-
 from flask import Flask, request
 from flask_restful import Resource, Api
 from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
-# import config
+import os, config
 
 from resources.user import User,UserUpdate,UserByID
 from resources.restaurant import Restaurant
-from resources.menu import Menu,MenuByID
-from resources.transaction import GetEphemeralKey
+from resources.menu import Menu,MenuByID,MenuByRestaurant
+from resources.transaction import EphemeralKey
 
 app = Flask(__name__)
 ####################### DB config ####################################
 # Heroku DB url/SQlite url
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL','sqlite:///restaurant.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',config.db_splite_url)
 
 # AWS DB url
 # app.config['SQLALCHEMY_DATABASE_URI'] = config.aws_postgresql_url
@@ -24,7 +22,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL','sqlite://
 ######################################################################
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = 'restaurant_secret_key_fawnLioaIhfehFjneGgehdfa05dhka96nfuwb'
+app.secret_key = os.environ.get('APP_SECRET_KEY',config.app_secret_key)
 api = Api(app)
 
 # comment the following section if running on Heroku
@@ -45,11 +43,12 @@ api.add_resource(Restaurant,'/restaurant')
 
 api.add_resource(Menu,'/menu')
 api.add_resource(MenuByID,'/menu/id/<int:id>')
+api.add_resource(MenuByRestaurant,'/menu/restaurant/<int:rid>')
 
-api.add_resource(GetEphemeralKey, '/transaction/get_e_key')
+api.add_resource(EphemeralKey, '/transaction/ephemeral_key')
 ######################################################################
 
 if __name__ == '__main__' :
     from db import db
     db.init_app(app)
-    app.run(host = 'localhost',port = 5000,debug=True)
+    app.run(host = '192.168.0.107',port = 5000,debug=True)

@@ -1,8 +1,12 @@
 from flask_restful import Resource,reqparse
 from flask_jwt import jwt_required,current_identity
+<<<<<<< HEAD
 from datetime import datetime, timezone
 
 import traceback, stripe, config
+=======
+import os, traceback, stripe, config
+>>>>>>> cd7a41a75274790a7c1c9c2c710485faa8f1eaec
 
 from models.user import UserModel
 
@@ -14,8 +18,7 @@ NULL_CUSTOMER_ERROR: 'Customer not yet created'
 INTERNAL_ERROR: 'Internal server error! Failed to {}.'
 SUCCESS = 'Customer sucessfully {}'
 
-stripe.api_key = config.stripe_api_key
-class GetEphemeralKey(Resource):
+class EphemeralKey(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('stripe_api_version', type=str, required=True, help=BLANK_ERROR.format('API version'))
 
@@ -29,14 +32,21 @@ class GetEphemeralKey(Resource):
         if not customer_id:
             return {'message': NULL_CUSTOMER_ERROR}, 404
 
-        ephemeral_key = stripe.EphemeralKey.create(customer=customer_id, api_version=stripe_api_version)
+        stripe.api_key = os.environ.get("STRIPE_SECRET_KEY",config.stripe_api_key)
+        try:
+            ephemeral_key = stripe.EphemeralKey.create(customer=customer_id, api_version=stripe_api_version)
+        except:
+            traceback.print_exc()
+            return {
+                    'message' : INTERNAL_ERROR
+                        .format("retrieve Stripe Customer info.")
+                    },500
 
         if not ephemeral_key:
             return {'message': NULL_CUSTOMER_ERROR.format('create ephemeral key')}, 404
 
-        return {
-            'ephemeral_key': ephemeral_key
-        }, 200
+        return {'ephemeral_key': ephemeral_key}, 200
+
 
 class CreateCharge(Resource):
 
@@ -48,6 +58,7 @@ class CreateCharge(Resource):
     parser.add_argument('order', type=str, required=True, help=BLANK_ERROR.format('Order informaton'))
 
     @jwt_required()
+<<<<<<< HEAD
     data = self.parser.parse_args()
 
     customer_id = current_identity.stripeID
@@ -77,3 +88,37 @@ class CreateCharge(Resource):
     return {
         'charge_id': this_charge['id'],
         }, 200
+=======
+    def post(self):
+        data = self.parser.parse_args()
+
+        customer_id = current_identity.stripeID
+        source = data['source']
+        amount = data['amount']
+        order_id = data['order_id']
+
+        try:
+            this_charge = stripe.Charge.create(
+                amount=amount,
+                source=source,
+                currency='usd',
+                metadata={
+                    'order_id':order_id
+                }
+            )
+        except:
+            traceback.print_exc()
+            return {
+                'message': INTERNAL_ERROR.format('create charge')
+            }, 200
+
+        # TODO save charge
+
+        '''
+        order = OrderModel.get_by_order_id(order_id)
+        order.charge_id = this_charge.id
+        order.save_to_db()
+        '''
+
+        return {'charge_id': charge.id}, 200
+>>>>>>> cd7a41a75274790a7c1c9c2c710485faa8f1eaec
