@@ -1,6 +1,6 @@
 from flask_restful import Resource,reqparse
 from flask_jwt import jwt_required,current_identity
-import traceback, stripe, config
+import os, traceback, stripe, config
 
 from models.user import UserModel
 
@@ -26,7 +26,7 @@ class EphemeralKey(Resource):
         if not customer_id:
             return {'message': NULL_CUSTOMER_ERROR}, 404
 
-        stripe.api_key = config.stripe_api_key
+        stripe.api_key = os.environ.get("STRIPE_SECRET_KEY",config.stripe_api_key)
         try:
             ephemeral_key = stripe.EphemeralKey.create(customer=customer_id, api_version=stripe_api_version)
         except:
@@ -49,34 +49,35 @@ class CreateCharge(Resource):
     parser.add_argument('order', type=str, required=True, help=BLANK_ERROR.format('order_id'))
 
     @jwt_required()
-    data = self.parser.parse_args()
+    def post(self):
+        data = self.parser.parse_args()
 
-    customer_id = current_identity.stripeID
-    source = data['source']
-    amount = data['amount']
-    order_id = data['order_id']
+        customer_id = current_identity.stripeID
+        source = data['source']
+        amount = data['amount']
+        order_id = data['order_id']
 
-    try:
-        this_charge = stripe.Charge.create(
-            amount=amount,
-            source=source,
-            currency='usd',
-            metadata={
-                'order_id':order_id
-            }
-        )
-    except:
-        traceback.print_exc()
-        return {
-            'message': INTERNAL_ERROR.format('create charge')
-        }, 200
+        try:
+            this_charge = stripe.Charge.create(
+                amount=amount,
+                source=source,
+                currency='usd',
+                metadata={
+                    'order_id':order_id
+                }
+            )
+        except:
+            traceback.print_exc()
+            return {
+                'message': INTERNAL_ERROR.format('create charge')
+            }, 200
 
-    # TODO save charge
+        # TODO save charge
 
-    '''
-    order = OrderModel.get_by_order_id(order_id)
-    order.charge_id = this_charge.id
-    order.save_to_db()
-    '''
+        '''
+        order = OrderModel.get_by_order_id(order_id)
+        order.charge_id = this_charge.id
+        order.save_to_db()
+        '''
 
-    return {'charge_id': charge.id}, 200
+        return {'charge_id': charge.id}, 200
