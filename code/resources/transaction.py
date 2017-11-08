@@ -1,12 +1,8 @@
 from flask_restful import Resource,reqparse
 from flask_jwt import jwt_required,current_identity
-<<<<<<< HEAD
+import os, traceback, stripe, config
 from datetime import datetime, timezone
 
-import traceback, stripe, config
-=======
-import os, traceback, stripe, config
->>>>>>> cd7a41a75274790a7c1c9c2c710485faa8f1eaec
 
 from models.user import UserModel
 
@@ -51,14 +47,14 @@ class EphemeralKey(Resource):
 class CreateCharge(Resource):
 
     def updateOrderStatus(order, status):
-        order['status'] = 
+        order['status'] =
 
 
     parser = reqparse.RequestParser()
     parser.add_argument('order', type=str, required=True, help=BLANK_ERROR.format('Order informaton'))
 
     @jwt_required()
-<<<<<<< HEAD
+
     data = self.parser.parse_args()
 
     customer_id = current_identity.stripeID
@@ -88,7 +84,7 @@ class CreateCharge(Resource):
     return {
         'charge_id': this_charge['id'],
         }, 200
-=======
+
     def post(self):
         data = self.parser.parse_args()
 
@@ -121,4 +117,3 @@ class CreateCharge(Resource):
         '''
 
         return {'charge_id': charge.id}, 200
->>>>>>> cd7a41a75274790a7c1c9c2c710485faa8f1eaec
