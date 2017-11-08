@@ -1,5 +1,7 @@
 from flask_restful import Resource,reqparse
 from flask_jwt import jwt_required,current_identity
+from datetime import datetime, timezone
+
 import traceback, stripe, config
 
 from models.user import UserModel
@@ -37,26 +39,27 @@ class GetEphemeralKey(Resource):
         }, 200
 
 class CreateCharge(Resource):
+
+    def updateOrderStatus(order, status):
+        order['status'] = 
+
+
     parser = reqparse.RequestParser()
-    parser.add_argument('source', type=str, required=True, help=BLANK_ERROR.format('source'))
-    parser.add_argument('amount', type=float, required=True, help=BLANK_ERROR.format('source_id'))
-    parser.add_argument('order', type=str, required=True, help=BLANK_ERROR.format('order_id'))
+    parser.add_argument('order', type=str, required=True, help=BLANK_ERROR.format('Order informaton'))
 
     @jwt_required()
     data = self.parser.parse_args()
 
     customer_id = current_identity.stripeID
-    source = data['source']
-    amount = data['amount']
-    order_id = data['order_id']
+    order = date['order']
 
     try:
         this_charge = stripe.Charge.create(
-            amount=amount,
-            source=source,
-            currency='usd',
-            metadata={
-                'order_id':order_id
+            amount = order['total'],
+            source = order['source'],
+            currency = 'usd',
+            metadata = {
+                'order_id':order['id'],
             }
         )
     except:
@@ -65,14 +68,12 @@ class CreateCharge(Resource):
             'message': INTERNAL_ERROR.format('create charge')
         }, 200
 
-    # TODO save charge
+    # TODO order models
 
     '''
-    order = OrderModel.get_by_order_id(order_id)
-    order.charge_id = this_charge.id
-    order.save_to_db()
+        # change order status
     '''
 
     return {
-        'charge_id': charge.id,
+        'charge_id': this_charge['id'],
         }, 200
