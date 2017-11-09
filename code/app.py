@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
-import os, config
+import os
 
 from resources.user import User,UserUpdate,UserByID
 from resources.restaurant import Restaurant,RestaurantByID
@@ -20,10 +20,21 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',config.db_
 
 # Local MySQL url
 # app.config['SQLALCHEMY_DATABASE_URI'] = config.local_mysql_url
+
+# get secret from os.environ first
+app_key = os.environ.get('APP_SECRET_KEY')
+db_url = os.environ.get('DATABASE_URL')
+if not app_key:
+    # if not found, get it from config.py file
+    import config
+    app_key = config.app_secret_key
+    db_url = config.db_splite_url
+app.secret_key = app_key
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+
 ######################################################################
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = os.environ.get('APP_SECRET_KEY',config.app_secret_key)
 api = Api(app)
 
 # comment the following section if running on Heroku

@@ -1,7 +1,7 @@
 from flask_restful import Resource,reqparse
 from werkzeug.security import safe_str_cmp
 from flask_jwt import jwt_required,current_identity
-import os, traceback, stripe, config
+import os, traceback, stripe
 
 from models.user import UserModel
 
@@ -25,7 +25,7 @@ class User(Resource):
         # now assume only user.id = 1 indicates admin
         if user.id != 1:
             return {'message': UNAUTH_ERROR},401
-            
+
         users = []
         result = UserModel.find_all()
         for user in result:
@@ -47,7 +47,14 @@ class User(Resource):
                     }, 400
         # try to create a stripe Customer
         try:
-            stripe.api_key = os.environ.get('STRIPE_SECRET_KEY',config.stripe_api_key)
+            # get secret from os.environ first
+            key = os.environ.get('STRIPE_SECRET_KEY')
+            if not key:
+                # if not found, get it from config.py file
+                import config
+                key = config.stripe_api_key
+            stripe.api_key = key
+            
             stripe_response = stripe.Customer.create(
                 description="Customer for {}".format(credentials['email']),
                 email=credentials['email']

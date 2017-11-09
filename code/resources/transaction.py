@@ -1,6 +1,6 @@
 from flask_restful import Resource,reqparse
 from flask_jwt import jwt_required,current_identity
-import os, traceback, stripe, config
+import os, traceback, stripe
 
 from models.user import UserModel
 
@@ -26,7 +26,14 @@ class EphemeralKey(Resource):
         if not customer_id:
             return {'message': NULL_CUSTOMER_ERROR}, 404
 
-        stripe.api_key = os.environ.get("STRIPE_SECRET_KEY",config.stripe_api_key)
+        # get secret from os.environ first
+        key = os.environ.get('STRIPE_SECRET_KEY')
+        if not key:
+            # if not found, get it from config.py file
+            import config
+            key = config.stripe_api_key
+        stripe.api_key = key
+
         try:
             ephemeral_key = stripe.EphemeralKey.create(customer=customer_id, api_version=stripe_api_version)
         except:

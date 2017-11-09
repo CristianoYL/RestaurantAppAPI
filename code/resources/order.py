@@ -1,9 +1,7 @@
 from flask_restful import Resource,reqparse
 from datetime import datetime, timezone
 from flask_jwt import jwt_required,current_identity
-import os, config, traceback, stripe
-
-stripe.api_key = config.stripe_api_key
+import os, traceback, stripe
 
 # TODO: order model
 from models.order import OrderModel
@@ -38,7 +36,14 @@ class Order(Resource):
         updateOrderStatus(order, 'pending')
 
         try:
-            stripe.api_key = os.environ.get("STRIPE_SECRET_KEY",config.stripe_api_key)
+            # get secret from os.environ first
+            key = os.environ.get('STRIPE_SECRET_KEY')
+            if not key:
+                # if not found, get it from config.py file
+                import config
+                key = config.stripe_api_key
+            stripe.api_key = key
+            
             this_charge = stripe.Charge.create(
                 amount = order['total'],
                 source = order['source'],
