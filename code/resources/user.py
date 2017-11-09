@@ -18,13 +18,21 @@ class User(Resource):
     parser.add_argument('phone', type=str, required=False)
     parser.add_argument('password', type=str, required=True, help=BLANK_ERROR.format("Password"))
 
+    @jwt_required()
     def get(self):   #view all users
+        user = current_identity
+        #TODO: implement admin auth method
+        # now assume only user.id = 1 indicates admin
+        if user.id != 1:
+            return {'message': UNAUTH_ERROR},401
+            
         users = []
         result = UserModel.find_all()
         for user in result:
             users.append({
                 'id' : user.id,
                 'stripeID' : user.stripeID,
+                'email' : user.email,
                 'phone':user.phone
             })
         return {'users':users},200
