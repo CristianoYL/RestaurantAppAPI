@@ -1,26 +1,41 @@
 from flask_restful import Resource,reqparse
+from flask_jwt import jwt_required,current_identity
 import traceback
 
 from models.menu import MenuModel
+from models.restaurant import RestaurantModel
+
+BLANK_ERROR = '{} cannot be blank.'
+UNAUTH_ERROR = 'Action unauthorized. Admin previlege required.'
+NOT_FOUND_ERROR = 'Menu item <{}> not found.'
+ALREADY_EXISTS_ERROR = 'Menu item <{}> already exists for restaurant <{}>.'
+INTERNAL_ERROR = 'Internal server error! {}'
 
 class Menu(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('rid', type=int, required=True,help="Restaurant ID cannot be blank.")
-    parser.add_argument('name', type=str, required=True,help="Name cannot be blank.")
-    parser.add_argument('price', type=float, required=True, help="Price cannot be blank.")
-    parser.add_argument('category', type=str, required=True, help="Category cannot be blank.")
+    parser.add_argument('rid', type=int, required=True,help=BLANK_ERROR.format("Restaurant ID"))
+    parser.add_argument('name', type=str, required=True,help=BLANK_ERROR.format("Name"))
+    parser.add_argument('price', type=float, required=True, help=BLANK_ERROR.format("Price"))
+    parser.add_argument('category', type=str, required=True, help=BLANK_ERROR.format("Category"))
     parser.add_argument('description', type=str, required=False)
     parser.add_argument('spicy', type=int, required=False)
     parser.add_argument('isAvailable', type=bool, required=False)
     parser.add_argument('isRecommended', type=bool, required=False)
 
+    @jwt_required()
     def get(self):  # get all menus, for testing only
+        user = current_identity
+        #TODO: implement admin auth method
+        # now assume only user.id = 1 indicates admin
+        if user.id != 1:
+            return {'message': UNAUTH_ERROR},401
         return {'menu':[menu.json() for menu in MenuModel.find_all()]},200
 
     def post(self): # post a new menu item
         data = self.parser.parse_args()
         if MenuModel.find_by_name(data['rid'],data['name']):
-            return {'message': 'Menu item <{}> already exists for restaurant <{}>!'.format(data['name'],data['rid'])},400
+            return {'message': ALREADY_EXISTS_ERROR
+                .format(data['name'],data['rid'])},400
 
         # set default values if not specified
         if data['spicy'] is None:
@@ -37,7 +52,8 @@ class Menu(Resource):
             menu.save_to_db()
         except:
             traceback.print_exc()
-            return {'message': 'Internal server error, failed to create menu item'},500
+            return {'message': INTERNAL_ERROR
+                .format('Failed to create menu item')},500
         return menu.json(), 201
 
 class MenuByID(Resource):
@@ -54,12 +70,12 @@ class MenuByID(Resource):
         menu = MenuModel.find_by_id(id)
         if menu:
             return menu.json(),200
-        return {'message':'Menu item {} not found!'.format(id)},404
+        return {'message':NOT_FOUND_ERROR.format(id)},404
 
     def put(self,id):
         menu = MenuModel.find_by_id(id)
         if not menu:
-            return {'message':'Menu item {} not found!'.format(id)},404
+            return {'message':NOT_FOUND_ERROR.format(id)},404
 
         # update with the given params
         data = self.parser.parse_args()
@@ -81,11 +97,15 @@ class MenuByID(Resource):
             menu.save_to_db()
         except:
             traceback.print_exc()
-            return {'message':'Internal server error, failed to update menu.'},500
+            return {'message':INTERNAL_ERROR
+                .format('Failed to update menu.')},500
         return menu.json(),200
 
 class MenuByRestaurant(Resource):
 
     def get(self,rid):
+        if RestaurantModel.find_by_id(rid) is None:
+            return {'message':'Restaurant <id:{}> not found.'
+                .format(rid)},404
         menu_list = [menu.json() for menu in MenuModel.find_by_restaurant(rid)]
         return {'menus':menu_list},200

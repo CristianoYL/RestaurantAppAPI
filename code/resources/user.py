@@ -5,11 +5,18 @@ import os, traceback, stripe, config
 
 from models.user import UserModel
 
+BLANK_ERROR = '{} cannot be blank.'
+UNAUTH_ERROR = 'Action unauthorized. Admin previlege required.'
+NOT_FOUND_ERROR = 'User <{}> not found.'
+ALREADY_EXISTS_ERROR = 'User <{}> already exists.'
+INTERNAL_ERROR = 'Internal server error! {}'
+
+
 class User(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('email', type=str, required=True,help="email cannot be blank.")
+    parser.add_argument('email', type=str, required=True,help=BLANK_ERROR.format("Email"))
     parser.add_argument('phone', type=str, required=False)
-    parser.add_argument('password', type=str, required=True, help="Password cannot be blank.")
+    parser.add_argument('password', type=str, required=True, help=BLANK_ERROR.format("Password"))
 
     def get(self):   #view all users
         users = []
@@ -27,7 +34,7 @@ class User(Resource):
         # check if email is registered
         user = UserModel.find_by_email(credentials['email'])
         if user:
-            return {'message':'Account <{}> already exists.'
+            return {'message':ALREADY_EXISTS_ERROR
                             .format(credentials['email'])
                     }, 400
         # try to create a stripe Customer
@@ -47,12 +54,13 @@ class User(Resource):
         try:
             user.save_to_db()
         except:
-            return { 'message': 'Internal Server Error, registration failed!' }, 500
+            return { 'message': INTERNAL_ERROR
+                .format('Registration failed!')}, 500
         return user.json(), 201
 
 class UserUpdate(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('password', type=str, required=True, help="Password cannot be blank.")
+    parser.add_argument('password', type=str, required=True, help=BLANK_ERROR.format("Password"))
 
     @jwt_required()
     def put(self):   #change password
@@ -65,7 +73,8 @@ class UserUpdate(Resource):
         try:
             user.save_to_db()
         except:
-            return {'message':'Internal Server Error, change password failed!'}, 500
+            return {'message':INTERNAL_ERROR
+                .format('Change password failed!')}, 500
         return {'message':'password updated!'}, 200
 
 
@@ -75,18 +84,19 @@ class UserByID(Resource):
         user = UserModel.find_by_id(userID)
         if user:
             return {'user':user.json()},200
-        return {'message':'User <id:{}> not found'.format(userID)},404
+        return {'message':NOT_FOUND_ERROR.format(userID)},404
 
     def delete(self,userID):
         user = UserModel.find_by_id(userID)
         if not user:
-            return {'message':'User <id:{}> not found'.format(userID)},404
+            return {'message':NOT_FOUND_ERROR
+                .format(userID)},404
         try:
             user.delete_from_db()
         except:
             traceback.print_exc()
             return {
-                'message': 'Internal server error, failed to delete user<id:{}>.'
-                    .format(userID)
+                'message': INTERNAL_ERROR.format('Failed to delete user<id:{}>.'
+                    .format(userID))
                     },500
         return {'message': 'User deleted!'},200

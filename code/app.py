@@ -5,7 +5,7 @@ from security import authenticate, identity
 import os, config
 
 from resources.user import User,UserUpdate,UserByID
-from resources.restaurant import Restaurant
+from resources.restaurant import Restaurant,RestaurantByID
 from resources.menu import Menu,MenuByID,MenuByRestaurant
 from resources.transaction import EphemeralKey
 # from resources.order import Order,OrderByID
@@ -41,6 +41,7 @@ api.add_resource(UserUpdate,'/user/password')
 api.add_resource(UserByID,'/user/id/<int:userID>')
 
 api.add_resource(Restaurant,'/restaurant')
+api.add_resource(RestaurantByID,'/restaurant/id/<int:id>')
 
 api.add_resource(Menu,'/menu')
 api.add_resource(MenuByID,'/menu/id/<int:id>')
