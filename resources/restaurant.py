@@ -23,13 +23,7 @@ class Restaurant(Resource):
     parser.add_argument('promo',type=str,required=False)
     parser.add_argument('phone',type=str,required=True,help=BLANK_ERROR.format('Telephone'))
 
-    @jwt_required()
     def get(self):  # get all restaurants
-        user = current_identity
-        #TODO: implement admin auth method
-        # now assume only user.id = 1 indicates admin
-        if user.id != 1:
-            return {'message': UNAUTH_ERROR},401
         return {'restaurants':[res.json() for res in RestaurantModel.find_all()]},200
 
     def post(self): # create a new restaurant
