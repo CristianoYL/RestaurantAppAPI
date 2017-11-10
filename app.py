@@ -52,7 +52,8 @@ api = Api(app)
 jwt = JWT(app,authenticate,identity)    #set up '/auth'
 # config JWT to expire within half an hour
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=1800)
-app.config['JWT_AUTH_USERNAME_KEY'] = "email"
+# config JWT auth key name to be 'email' instead of default 'username'
+# app.config['JWT_AUTH_USERNAME_KEY'] = "email"
 
 api.add_resource(User,'/user')
 api.add_resource(UserUpdate,'/user/password')
