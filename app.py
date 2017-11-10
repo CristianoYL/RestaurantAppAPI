@@ -27,6 +27,9 @@ db_url = os.environ.get('DATABASE_URL')
 if not app_key:
     # if not found, get it from config.py file
     import config
+    @app.before_first_request
+    def create_tables():
+        db.create_all()
     app_key = config.app_secret_key
     db_url = config.db_splite_url
 app.secret_key = app_key
