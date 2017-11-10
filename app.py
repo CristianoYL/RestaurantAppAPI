@@ -3,6 +3,7 @@ from flask_restful import Resource, Api
 from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
 import os
+from datetime import timedelta
 
 from resources.user import User,UserUpdate,UserByID
 from resources.restaurant import Restaurant,RestaurantByID
@@ -49,6 +50,9 @@ api = Api(app)
 
 ################ endpoints #############################################
 jwt = JWT(app,authenticate,identity)    #set up '/auth'
+# config JWT to expire within half an hour
+app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=1800)
+app.config['JWT_AUTH_USERNAME_KEY'] = "email"
 
 api.add_resource(User,'/user')
 api.add_resource(UserUpdate,'/user/password')
