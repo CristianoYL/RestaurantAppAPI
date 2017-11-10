@@ -13,7 +13,7 @@ from resources.transaction import EphemeralKey
 app = Flask(__name__)
 ####################### DB config ####################################
 # Heroku DB url/SQlite url
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',config.db_splite_url)
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',config.db_splite_url)
 
 # AWS DB url
 # app.config['SQLALCHEMY_DATABASE_URI'] = config.aws_postgresql_url
@@ -21,7 +21,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',config.db_
 # Local MySQL url
 # app.config['SQLALCHEMY_DATABASE_URI'] = config.local_mysql_url
 
-# get secret from os.environ first
+# get secret and config from os.environ first
 app_key = os.environ.get('APP_SECRET_KEY')
 db_url = os.environ.get('DATABASE_URL')
 if not app_key:
