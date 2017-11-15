@@ -29,9 +29,16 @@ class Menu(Resource):
         # now assume only user.id = 1 indicates admin
         if user.id != 1:
             return {'message': UNAUTH_ERROR},401
-        return {'menu':[menu.json() for menu in MenuModel.find_all()]},200
+        return {'menus':[menu.json() for menu in MenuModel.find_all()]},200
 
+    @jwt_required()
     def post(self): # post a new menu item
+        user = current_identity
+        #TODO: implement admin auth method
+        # now assume only user.id = 1 indicates admin
+        if user.id != 1:
+            return {'message': UNAUTH_ERROR},401
+
         data = self.parser.parse_args()
         if MenuModel.find_by_name(data['rid'],data['name']):
             return {'message': ALREADY_EXISTS_ERROR
@@ -72,7 +79,14 @@ class MenuByID(Resource):
             return menu.json(),200
         return {'message':NOT_FOUND_ERROR.format(id)},404
 
+    @jwt_required()
     def put(self,id):
+        user = current_identity
+        #TODO: implement admin auth method
+        # now assume only user.id = 1 indicates admin
+        if user.id != 1:
+            return {'message': UNAUTH_ERROR},401
+
         menu = MenuModel.find_by_id(id)
         if not menu:
             return {'message':NOT_FOUND_ERROR.format(id)},404

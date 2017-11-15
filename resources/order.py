@@ -43,7 +43,7 @@ class Order(Resource):
                 import config
                 key = config.stripe_api_key
             stripe.api_key = key
-            
+
             this_charge = stripe.Charge.create(
                 amount = order['total'],
                 source = order['source'],

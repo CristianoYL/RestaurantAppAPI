@@ -54,7 +54,7 @@ class User(Resource):
                 import config
                 key = config.stripe_api_key
             stripe.api_key = key
-            
+
             stripe_response = stripe.Customer.create(
                 description="Customer for {}".format(credentials['email']),
                 email=credentials['email']
@@ -95,13 +95,27 @@ class UserUpdate(Resource):
 
 class UserByID(Resource):
 
+    @jwt_required()
     def get(self,userID):   # find user by id
+        user = current_identity
+        #TODO: implement admin auth method
+        # now assume only user.id = 1 indicates admin
+        if user.id != 1:
+            return {'message': UNAUTH_ERROR},401
+
         user = UserModel.find_by_id(userID)
         if user:
             return {'user':user.json()},200
         return {'message':NOT_FOUND_ERROR.format(userID)},404
 
+    @jwt_required()
     def delete(self,userID):
+        user = current_identity
+        #TODO: implement admin auth method
+        # now assume only user.id = 1 indicates admin
+        if user.id != 1:
+            return {'message': UNAUTH_ERROR},401
+
         user = UserModel.find_by_id(userID)
         if not user:
             return {'message':NOT_FOUND_ERROR
