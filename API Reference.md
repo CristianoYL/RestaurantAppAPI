@@ -2,13 +2,15 @@
 Below is the reference of all the available APIs of this project, which might be helpful for future reference.
 
 ## User
-## POST ```/auth```
-User authentication using flask-jwt.
+#### POST ```/auth```
+User authentication using flask-jwt. Returning a JWT if authenticated, else throw ```401 UNAUTHORIZED```
 ##### params:
 ```
-username: (string, required) the phone number of the user
+{
+  "username": <(string, required) the phone number of the user>
 
-password: (string, required) the password of the user
+  "password": <(string, required) the password of the user>
+}
 ```
 
 ## GET ```/user```
