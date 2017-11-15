@@ -1,4 +1,4 @@
-# MY_TEAM_API
+# Introduction
 This is a Flask Http server, which exposes a set of REST APIs to users. It provides service for online restaurant ordering. A sample Android app using this service can be found at [my order GitHub repo here.](https://github.com/CristianoYL/RestaurantAndroidApp)
 # Configurations
 ## Dependencies
