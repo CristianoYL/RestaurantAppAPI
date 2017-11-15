@@ -5,6 +5,7 @@ This is a Flask Http server, which exposes a set of REST APIs to users. It provi
 This service relies on serveral other services as well. For example, it uses ```Flask_JWT``` for tokenized authentication, ```Flask_SQLAlchemy``` for databse interaction, and ```Stripe``` for live credit card charges etc.
 
 A full dependency list could be found in the [requirement.txt file in this repo](https://github.com/CristianoYL/RestaurantAppAPI/blob/master/requirements.txt)
+
 And you may use the Python command to install all the required dependencies easily:
 ```
 pip install -r requirements.txt
