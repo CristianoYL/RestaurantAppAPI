@@ -1,39 +1,35 @@
-# API documentation
-Below is the documentation of all the available APIs of this project, which might be helpful for future reference.
+# API Reference
+Below is the reference of all the available APIs of this project, which might be helpful for future reference.
 
-# End Points
-## /auth
-### Allowed Methods
-#### POST:
+## User
+## POST ```/auth```
 User authentication using flask-jwt.
 ##### params:
+```
 username: (string, required) the phone number of the user
 
 password: (string, required) the password of the user
+```
 
-## /user
-### Allowed Methods
-#### GET:
+## GET ```/user```
 Get all users' id and phone number
-#### POST:
+#### POST ```/user```
 Register a new user if not exists
 ##### params:
+```
 phone: (string, required) the phone number of the user
 
 password: (string, required) the password of the user
-
-## /user/password
-### Allowed Methods
-#### PUT:
+```
+## PUT ```/user/password```
 Use JWT to identify current user and change this user's password
 ##### params:
+```
 password: (string, required) the new password
-
-## /user/id/<<int:userID>>
-### Allowed Methods
-#### GET:
+```
+## GET ```/user/id/<<int:userID>>```
 Get the user with specified user ID
-#### DELETE:
+## DELETE ```/user/id/<<int:userID>>```
 Delete the user with the specified user ID
 
 ## /restaurant
