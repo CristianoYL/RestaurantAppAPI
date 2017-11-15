@@ -1,5 +1,5 @@
 # Introduction
-This is a Flask Http server, which exposes a set of REST APIs to users. It provides service for online restaurant ordering. A sample Android app using this service can be found at [my order GitHub repo here.](https://github.com/CristianoYL/RestaurantAndroidApp)
+This is a Flask Http server, which exposes a set of REST APIs to users. It provides service for online restaurant ordering. A sample Android app using this service can be found at [my other GitHub repo here.](https://github.com/CristianoYL/RestaurantAndroidApp)
 # Configurations
 ## Dependencies
 This service relies on serveral other services as well. For example, it uses ```Flask_JWT``` for tokenized authentication, ```Flask_SQLAlchemy``` for databse interaction, and ```Stripe``` for live credit card charges etc.
