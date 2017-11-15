@@ -1,5 +1,5 @@
 # API Reference
-(Updated by 11/15/2017)
+(Updated on 11/15/2017)
 
 Below is the reference of all the available APIs of this project, which might be helpful for future reference.
 
