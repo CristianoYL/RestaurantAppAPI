@@ -13,7 +13,7 @@ Beware that there is a space between JWT and the access token, unfortunately.
 
 In this reference, we will denote the endpoint as **jwt_required** if ```JWT``` token is required to access the endpoint, and we denote admin identity requirement by **admin_jwt_required**
 * When the queried endpoint returns an error, ```500```, ```404```, ```401```, ```400``` etc. You may use the key ```message``` to retrieve the error info.
-
+# Endpoints
 ## User
 #### POST ```/auth```
 User authentication using flask-jwt. Returning a JWT if authenticated, else return ```401 UNAUTHORIZED```
