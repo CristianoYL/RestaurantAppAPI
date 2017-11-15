@@ -16,11 +16,12 @@ In order to deploy this service. You'll need to creat a ```config.py``` file in 
 stripe_secret_key = <stripe secret key>
 ```
 # Deployment
-This project is designed to deploy on Heroku. The [procfile](https://github.com/CristianoYL/RestaurantAppAPI/blob/master/Procfile) serves as the entry point for Heroku service. And these files are needed only for Heroku deployment:
+This project is designed to deploy on Heroku. The [Procfile](https://github.com/CristianoYL/RestaurantAppAPI/blob/master/Procfile) serves as the entry point for Heroku service. And these files are needed only for Heroku deployment:
 * Profile
 * run.py
 * runtime.txt
 * uwsgi.ini
+
 Thus if you wish to deploy this service on other platforms or just to test locally, feel free to ignore these files.
 
 However, if you do wish to deploy this service on Heroku, please remember to configure the entries in ```config.py``` as Environment Variables on Heroku in order to let it run.
