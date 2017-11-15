@@ -1,6 +1,17 @@
 # API Reference
 Below is the reference of all the available APIs of this project, which might be helpful for future reference.
 
+Before diving into details, here's some tips about the APIs.
+
+1. When an endpoint requires ```JWT``` authentication, please include the ```Authorization``` Header and ```JWT``` like this:
+```
+{"Authorization" : "JWT <the according access token>"}
+```
+Beware that there is a space between JWT and the access token, unfortunately.
+
+In this reference, we will denote the endpoint as **jwt_required** if ```JWT``` token is required to access the endpoint.
+1. When the queried endpoint returns an error, ```500```, ```404```, ```401```, ```400``` etc. You may use the key ```message``` to retrieve the error info.
+
 ## User
 #### POST ```/auth```
 User authentication using flask-jwt. Returning a JWT if authenticated, else return ```401 UNAUTHORIZED```
