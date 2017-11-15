@@ -3,35 +3,63 @@ Below is the reference of all the available APIs of this project, which might be
 
 ## User
 #### POST ```/auth```
-User authentication using flask-jwt. Returning a JWT if authenticated, else throw ```401 UNAUTHORIZED```
+User authentication using flask-jwt. Returning a JWT if authenticated, else return ```401 UNAUTHORIZED```
 ##### params:
 ```
 {
   "username": <(string, required) the phone number of the user>
-
   "password": <(string, required) the password of the user>
 }
 ```
 
-## GET ```/user```
-Get all users' id and phone number
+#### GET ```/user```
+Get all users' id,stripeID, email and phone number. Request must include a ```Authorization``` Header with valid admin **JWT**. Otherwise, return ```401 UNAUTHORIZED```
+If authorized, return list of ```User```s
+```
+{
+  "users":[{
+                'id' : user.id,
+                'stripeID' : user.stripeID,
+                'email' : user.email,
+                'phone':user.phone
+            },
+            ...
+            ]
+}
+```
 #### POST ```/user```
-Register a new user if not exists
+Register a new user if not exists, and return the created `User` with status code```201 CREATED```. Else return ```400``` if already exists or ```500``` if there's an error. use the key ```message``` to retrieve error info.
 ##### params:
 ```
-phone: (string, required) the phone number of the user
-
-password: (string, required) the password of the user
+{
+  "phone": <(string, required) the phone number of the user>
+  "password": <(string, required) the password of the user>
+}
 ```
-## PUT ```/user/password```
-Use JWT to identify current user and change this user's password
+#### PUT ```/user/password```
+Use JWT to identify current user and change this user's password. Must include ```Authorization``` Header with valid **JWT**. Return ```200``` if succeeded. Return ```400``` if using the same password. Return ```500``` if there is other error, use key ```message``` to retrieve error info.
 ##### params:
 ```
-password: (string, required) the new password
+{
+  "password": <(string, required) the new password>
+}
 ```
-## GET ```/user/id/<<int:userID>>```
-Get the user with specified user ID
-## DELETE ```/user/id/<<int:userID>>```
+#### GET ```/user/id/<<int:userID>>```
+Get the user with specified user ID. Request must include a ```Authorization``` Header with valid admin **JWT**. Otherwise, return ```401 UNAUTHORIZED```
+If authorized, return the found ```User```
+```
+{ 
+  "user" : {
+              'id' : user.id,
+              'stripeID' : user.stripeID,
+              'email' : user.email,
+              'phone':user.phone
+              'password' : user.password
+            }
+}
+```
+If not found, return ```404```
+#### DELETE ```/user/id/<<int:userID>>```
 Delete the user with the specified user ID
 
 ## /restaurant
