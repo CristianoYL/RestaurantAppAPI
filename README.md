@@ -21,7 +21,17 @@ pip install -r requirements.txt
 ## Secrets
 In order to deploy this service. You'll need to creat a ```config.py``` file in the root folder that includes some secret entries and these values should be kept away from VCS. A sample ```config.py``` file is like this:
 ```
-stripe_secret_key = <stripe secret key>
+# stripe secret key to authenticate your service, do not expose it in any VCS
+stripe_api_key = <your_stripe_secret_key>
+
+# the private key to encrypt JWT token
+app_secret_key = <your_app_secret_key>
+
+# creates a SQLite DB in the root folder for local testing. 
+# You may change it to any DB urls of your choice.
+# Not required if you deployed your service on Heroku or any other platform,
+# on which you must specify a environment variable DATABASE_URL to point to your db url
+db_splite_url = "sqlite:///restaurant.db"
 ```
 # Deployment
 This project is designed to deploy on Heroku. The [Procfile](https://github.com/CristianoYL/RestaurantAppAPI/blob/master/Procfile) serves as the entry point for Heroku service. And these files are needed only for Heroku deployment:
