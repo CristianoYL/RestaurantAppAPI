@@ -19,7 +19,7 @@ And you may use the Python command to install all the required dependencies easi
 pip install -r requirements.txt
 ```
 ## Secrets
-In order to deploy this service. You'll need to creat a ```config.py``` file in the root folder that includes some secret entries and these values should be kept away from VCS. A sample ```config.py``` file is like this:
+In order to deploy this service. You'll need to create a ```config.py``` file in the root folder that includes some secret entries and these values should be kept away from VCS. A sample ```config.py``` file is like this:
 ```
 # stripe secret key to authenticate your service, do not expose it in any VCS
 stripe_api_key = <your_stripe_secret_key>
