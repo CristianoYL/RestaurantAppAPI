@@ -91,14 +91,14 @@ We enforced tokenized authentication of users in this project, which improved se
 * The token, representing a specific user serves as his identity in the client side, and the server side only accept this token for authentication (except for login).
 * The token, if received by server, is decrypted, using the private key, to the JSON object that contains the user's info.
 
-In this way, the user's identity is kept encrypted during all API calls thus is safe from eavesdropping.
+In this way, the user's identity is kept encrypted during all API calls thus is safe from eavesdropping. And this is also why you need to keep the ```app_secret_key``` in your ```config.py``` file secure.
 
 ## Security of Payment
 In this project, we minimized our interaction and knowledge on user's payment information. We do not store any card information from the users on our server, thus there's no risk of leaking payment information if our database is under attack.
 
 We achieve this level of security by following [Stripe's Developer Guide](https://stripe.com/docs/quickstart). We manage all our customer's account and payment information on Stripe, who serves as a industry standard for securely managing payment information and live transactions.
 
-Stripe enforces security using Public Key Encryption. We communicate to Stripe using our Stripe Secret Key as well as a Public Key as follows:
+Stripe enforces security using Public Key Encryption. This is why you need to keep the ```stripe_api_key``` in your ```config.py``` file secure. We communicate to Stripe using our Stripe Secret Key as well as a Public Key as follows:
 
 * From our client side, Android App from example, the user post a request containing the Public Key, which is universally publishable, to our server.
 * When receiving the request and Public Key, our server uses its Secret Key as well as the user's identity to make a request to the Stripe server. If the request is properly decrypted, which means our Secret Key is authentic, the Stripe Server will generate and respond with an Ephemeral Key. And our server will include this Ephemeral Key in our response to our user.
