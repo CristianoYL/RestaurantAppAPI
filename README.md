@@ -62,9 +62,9 @@ app.run(host = '<your_ip>',port = 5000,debug=True)
 make sure you substitute <your_ip> with your real IP. If you use ```localhost```, your server may run, however, if you are sending requests from another device, such as your phone, then your server may never receive it. Thus it is recommended to use your IP within your LAN, which is often of these formats: ```192.168.x.x``` or ```10.x.x.x```.
 
 ### Heroku Deployment
-Deploying on Heroku is recommended for individual projects or small businesses. Generally, it requires a minimal knowledge on server deployment and configurations, and it can be free. Thus I deployed most of my personal projects here for long term.
+Deploying on Heroku is recommended for personal projects or small businesses. Generally, it requires a minimal knowledge on server deployment and configurations, and it can be free. Thus I deployed most of my personal projects here for long term.
 
-You can set up Databases such as PostgreSQL on Heroku easily using their Add-ons, and Heroku will configure it for you and make sure you have access to the database from your server.
+You can set up Database such as PostgreSQL on Heroku easily using their Add-ons, and Heroku will configure it for you and make sure you have access to the database from your server.
 
 However, if you have sufficient knowledge or growing demand on your server, you may find Heroku less capable. And it's time you consider switching to other cloud hosting services such as AWS.
 ### AWS Deployment

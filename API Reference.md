@@ -26,7 +26,7 @@ User authentication using flask-jwt. Returning a JWT if authenticated, else retu
 ```
 
 #### GET ```/user```
-**admin_jwt_required** Get all users' id,stripeID, email and phone number. If authorized, return list of ```User```s
+**admin_jwt_required** Get all users' id, stripeID, email and phone number. If authorized, return list of ```User```s
 ```
 {
   "users":[{
@@ -59,7 +59,7 @@ Register a new user if not exists, and return the created `User` with status cod
 #### GET ```/user/id/<int:userID>```
 **admin_jwt_required** Get the user with specified user ID. If authorized, return the found ```User```
 ```
-{ 
+{
   "user" : {
               'id' : user.id,
               'stripeID' : user.stripeID,
@@ -116,7 +116,7 @@ Create a new restaurant with given params
   "phone": <(string, optional) the contact phone number of the restaurant>
 }
 ```
-If Authorized, return the updated ```Restaurant``` objext, else return ```401```, ```404``` or ```500``` accordingly.
+If Authorized, return the updated ```Restaurant``` object, else return ```401```, ```404``` or ```500``` accordingly.
 
 ## Menu
 #### GET ```/menu```
@@ -177,7 +177,7 @@ Return ```404``` if restaurant not found.
 ##### params
 ```
 {
-  "stripe_api_version" : "<(String, requried) the current in-use API version of Stripe>"
+  "stripe_api_version" : "<(String, required) the current in-use API version of Stripe>"
 }
 ```
 Returns the ```ephemeral key``` if succeeded:
