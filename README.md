@@ -8,9 +8,9 @@ You may acquire virtualenv using command:
 ```
 pip install virtualenv
 ```
-You may find futher instructions on virtualenv in the [above link](https://virtualenv.pypa.io/en/stable/).
+You may find further instructions on virtualenv in the [above link](https://virtualenv.pypa.io/en/stable/).
 ## Dependencies
-This service relies on serveral other services as well. For example, it uses [Flask_JWT](https://pythonhosted.org/Flask-JWT/) for tokenized authentication, [Flask_SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/) for databse interaction, and [Stripe](https://stripe.com/docs) for live credit card charges etc.
+This service relies on several other services as well. For example, it uses [Flask_JWT](https://pythonhosted.org/Flask-JWT/) for tokenized authentication, [Flask_SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/) for database interaction, and [Stripe](https://stripe.com/docs) for live credit card charges etc.
 
 A full dependency list could be found in the [requirement.txt file in this repo](https://github.com/CristianoYL/RestaurantAppAPI/blob/master/requirements.txt)
 
@@ -27,7 +27,7 @@ stripe_api_key = <your_stripe_secret_key>
 # the private key to encrypt JWT token
 app_secret_key = <your_app_secret_key>
 
-# creates a SQLite DB in the root folder for local testing. 
+# creates a SQLite DB in the root folder for local testing.
 # You may change it to any DB urls of your choice.
 # Not required if you deployed your service on Heroku or any other platform,
 # on which you must specify a environment variable DATABASE_URL to point to your db url
@@ -40,7 +40,7 @@ This project is designed to deploy on Heroku. The [Procfile](https://github.com/
 * runtime.txt
 * uwsgi.ini
 
-Thus if you wish to deploy this service on other platforms or just to test locally, feel free to ignore these files.
+Thus if you wish to deploy this service on other platforms or just to test locally, feel free to ignore these files and use ```app.py``` as your entry point.
 
 However, if you do wish to deploy this service on Heroku, please remember to configure the entries in ```config.py``` as Environment Variables on Heroku in order to let it run.
 # API Reference
