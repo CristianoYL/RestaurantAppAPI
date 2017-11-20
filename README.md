@@ -35,7 +35,7 @@ db_splite_url = "sqlite:///restaurant.db"
 ```
 # Deployment
 ## Instructions
-This project is designed to deploy on Heroku. The [Procfile](https://github.com/CristianoYL/RestaurantAppAPI/blob/master/Procfile) serves as the entry point for Heroku service. And these files are needed only for Heroku deployment:
+This project is designed to be deployed on Heroku. The [Procfile](https://github.com/CristianoYL/RestaurantAppAPI/blob/master/Procfile) serves as the entry point for Heroku service. And these files are needed only for Heroku deployment:
 * Profile
 * run.py
 * runtime.txt
