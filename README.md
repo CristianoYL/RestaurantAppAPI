@@ -12,7 +12,7 @@ You may find further instructions on virtualenv in the [above link](https://virt
 ## Dependencies
 This service relies on several other services as well. For example, it uses [Flask_JWT](https://pythonhosted.org/Flask-JWT/) for tokenized authentication, [Flask_SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/) for database interaction, and [Stripe](https://stripe.com/docs) for live credit card charges etc.
 
-A full dependency list could be found in the [requirement.txt file in this repo](https://github.com/CristianoYL/RestaurantAppAPI/blob/master/requirements.txt)
+A full dependency list could be found in the [requirement.txt](https://github.com/CristianoYL/RestaurantAppAPI/blob/master/requirements.txt)  file in current repo.
 
 And you may use the Python command to install all the required dependencies easily:
 ```
