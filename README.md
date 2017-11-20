@@ -12,7 +12,7 @@ You may find further instructions on virtualenv in the [above link](https://virt
 ## Dependencies
 This service relies on several other services as well. For example, it uses [Flask_JWT](https://pythonhosted.org/Flask-JWT/) for tokenized authentication, [Flask_SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/) for database interaction, and [Stripe](https://stripe.com/docs) for live credit card charges etc.
 
-A full dependency list could be found in the [requirement.txt](https://github.com/CristianoYL/RestaurantAppAPI/blob/master/requirements.txt)  file in current repo.
+A full dependency list could be found in the [requirements.txt](https://github.com/CristianoYL/RestaurantAppAPI/blob/master/requirements.txt)  file in current repo.
 
 And you may use the Python command to install all the required dependencies easily:
 ```
@@ -27,7 +27,7 @@ stripe_api_key = <your_stripe_secret_key>
 # the private key to encrypt JWT token
 app_secret_key = <your_app_secret_key>
 
-# creates a SQLite DB in the root folder for local testing.
+# Creates a SQLite DB in the root folder for local testing.
 # You may change it to any DB urls of your choice.
 # Not required if you deployed your service on Heroku or any other platform,
 # on which you must specify a environment variable DATABASE_URL to point to your db url
