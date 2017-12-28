@@ -54,7 +54,6 @@ jwt = JWT(app,authenticate,identity)    #set up '/auth'
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=1800)
 # config JWT auth key name to be 'email' instead of default 'username'
 # app.config['JWT_AUTH_USERNAME_KEY'] = "email"
-
 api.add_resource(User,'/user')
 api.add_resource(UserUpdate,'/user/password')
 api.add_resource(UserByID,'/user/id/<int:userID>')
@@ -75,4 +74,5 @@ api.add_resource(EphemeralKey, '/transaction/ephemeral_key')
 if __name__ == '__main__' :
     from db import db
     db.init_app(app)
-    app.run(host = '192.168.0.107',port = 5000,debug=True)
+    # app.run(host = '192.168.1.15',port = 5000,debug=True)
+    app.run(host = '127.0.0.1',port = 5000,debug=True)
