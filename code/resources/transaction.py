@@ -27,12 +27,7 @@ class EphemeralKey(Resource):
             return {'message': NULL_CUSTOMER_ERROR}, 404
 
         # get secret from os.environ first
-        key = os.environ.get('STRIPE_SECRET_KEY')
-        if not key:
-            # if not found, get it from config.py file
-            import config
-            key = config.stripe_api_key
-        stripe.api_key = key
+        stripe.api_key = os.environ.get('STRIPE_SECRET_KEY')
 
         try:
             ephemeral_key = stripe.EphemeralKey.create(customer=customer_id, api_version=stripe_api_version)
