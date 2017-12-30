@@ -26,6 +26,9 @@ app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=1800)
 # config JWT auth key name to be 'email' instead of default 'username'
 # app.config['JWT_AUTH_USERNAME_KEY'] = "email"
 
+# To allow flask propagating exception even if debug is set to false on app
+app.config['PROPAGATE_EXCEPTIONS'] = True 
+
 ################ endpoints #############################################
 
 jwt = JWT(app,authenticate,identity)    #set up '/auth'
