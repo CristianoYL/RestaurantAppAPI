@@ -25,11 +25,6 @@ api = Api(app)
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=1800)
 # config JWT auth key name to be 'email' instead of default 'username'
 # app.config['JWT_AUTH_USERNAME_KEY'] = "email"
-
-################ endpoints #############################################
-
-jwt = JWT(app,authenticate,identity)    #set up '/auth'
-
 api.add_resource(User,'/user')
 api.add_resource(UserUpdate,'/user/password')
 api.add_resource(UserByID,'/user/id/<int:userID>')

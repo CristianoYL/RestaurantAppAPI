@@ -4,4 +4,4 @@
 venv/
 config.py
 /api_venv
-env.py
+.idea/

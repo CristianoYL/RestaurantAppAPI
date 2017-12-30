@@ -5,11 +5,11 @@ import os, traceback, stripe
 from models.user import UserModel
 
 BLANK_ERROR = '{} cannot be blank'
-NOT_FOUND_ERROR: 'User {} not found'
-NOT_VALID_ERROR: 'User {} is not valid'
-DUPLICATE_ERROR: 'Customer already created'
-NULL_CUSTOMER_ERROR: 'Customer not yet created'
-INTERNAL_ERROR: 'Internal server error! Failed to {}.'
+NOT_FOUND_ERROR = 'User {} not found'
+NOT_VALID_ERROR = 'User {} is not valid'
+DUPLICATE_ERROR = 'Customer already created'
+NULL_CUSTOMER_ERROR = 'Customer not yet created'
+INTERNAL_ERROR = 'Internal server error! Failed to {}.'
 SUCCESS = 'Customer sucessfully {}'
 
 class EphemeralKey(Resource):
