@@ -13,6 +13,10 @@ from resources.transaction import EphemeralKey
 
 app = Flask(__name__)
 
+# if running locally, use config file to set environment variables
+if __name__ == '__main__':
+    import config
+
 # get secret and config from os.environ first
 db_url = os.environ.get('DATABASE_URL')
 app.secret_key = os.environ.get('APP_SECRET_KEY')
@@ -27,7 +31,7 @@ app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=1800)
 # app.config['JWT_AUTH_USERNAME_KEY'] = "email"
 
 # To allow flask propagating exception even if debug is set to false on app
-app.config['PROPAGATE_EXCEPTIONS'] = True 
+app.config['PROPAGATE_EXCEPTIONS'] = True
 
 ################ endpoints #############################################
 
