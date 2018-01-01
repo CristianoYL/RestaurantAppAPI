@@ -16,7 +16,7 @@ You may find further instructions on virtualenv in [this link](https://virtualen
 
 ## Dependencies
 
-This service relies on several other services as well. For example, it uses [Flask_JWT](https://pythonhosted.org/Flask-JWT/) for tokenized authentication, [Flask_SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/) for database interaction, and [Stripe](https://stripe.com/docs) for live credit card charges etc.
+This service relies on several other services as well. For example, it uses [Flask-JWT](https://pythonhosted.org/Flask-JWT/) for tokenized authentication, [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/) for database interaction, and [Stripe](https://stripe.com/docs) for live credit card charges etc.
 
 A full dependency list could be found in the [requirements.txt](requirements.txt)  file in current repo.
 
@@ -109,7 +109,7 @@ This project emphasize on Security from the following aspects:
 
 ## Security of Identity
 
-We enforced tokenized authentication of users in this project, which improved security of identity. All users are encrypted into a JSON Web Token(JWT) using [Flask_JWT](https://pythonhosted.org/Flask-JWT/). The basic work flow is as below:
+We enforced tokenized authentication of users in this project, which improved security of identity. All users are encrypted into a JSON Web Token(JWT) using [Flask-JWT](https://pythonhosted.org/Flask-JWT/). The basic work flow is as below:
 
 - A user is serialized into a JSON object
 - The user JSON object is then encrypted using Private Key Encryption to an access token.
