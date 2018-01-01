@@ -90,14 +90,14 @@ However, if you have sufficient knowledge or growing demand on your server, you 
 
 ### AWS Deployment
 
-AWS is designed for industrial level products, and might seem less user-friendly for beginners. However, it is one of the most powerful and convenient hosting services so far. It gives you access to all level of configurations and provides reliability and consistency at its best. Here are some of the features you might find helpful:
+AWS is designed for industry level products, and might seem less user-friendly for beginners. However, it is one of the most powerful and convenient hosting services so far. It gives you access to all level of configurations and provides reliability and consistency at its best. Here are some of the features you might find helpful:
 
 - You may choose your server's hardware, CPU and Memory for example.
 - You may configure Availability Zones, in case you have performance demand across regions or want resilience against server failures.
 - You can config Retention Period as well as Backup frequency to minimize your lost.
 - You can use Security Groups for access control. And you can even config Virtual Private Cloud(VPC) to make your database isolated from public network.
 
-Also these features become important when you're to launch your project for production.
+These features become important when you're to launch your project for production. If you are looking for more information on this topic, you can check out this tutorial: [How to deploy Flask app using uWSGI and nginx](https://github.com/CristianoYL/rest-api-sections/blob/master/guides/How%20To%20Deploy%20Flask%20App%20Using%20uWSGI%20and%20Nginx.md)
 
 # Security
 
