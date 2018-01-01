@@ -6,15 +6,13 @@ This is a Flask HTTP server, which exposes a REST API to clients. It provides se
 
 ## Environment
 
-The project is developed under ```python-3.6.2```. It is recommended that you use virtual environment to set up the project in case of any version conflicts within your existing installment. One recommendation is to use [virtualenv](https://virtualenv.pypa.io/en/stable/).
-
-You may acquire virtualenv using command:
+The project is developed under ```python-3.6.2```. It is recommended that you use virtual environment to set up the project in case of any version conflicts within your existing installment. One recommendation is to use `virtualenv`. You may acquire virtualenv using command:
 
 ```
 pip install virtualenv
 ```
 
-You may find further instructions on virtualenv in the [above link](https://virtualenv.pypa.io/en/stable/).
+You may find further instructions on virtualenv in [this link](https://virtualenv.pypa.io/en/stable/).
 
 ## Dependencies
 
