@@ -132,7 +132,7 @@ If Authorized, return the updated ```Restaurant``` object, else return ```401```
 ##### params:
 ```
 {
-  "rid": <(int, required) ID of the restaurant to add menu>
+  "restaurantID": <(int, required) ID of the restaurant to add menu>
   "name": <(string, required) name of the food>
   "price": <(float, required) the price of the food>
   "category": <(string, required) the category of the food>
@@ -162,7 +162,7 @@ Get the menu item with specified menu ID. If found, return ```200``` and the ```
 ```
 Return the updated ```Menu``` object with ```200``` if authorized and succeeded. Else return ```401```, ```404```, ```500``` etc. accordingly.
 
-#### GET ```/menu/restaurant/id/<int:rid>```
+#### GET ```/menu/restaurant/id/<int:restaurantID>```
 Get the specified restaurant's menus by restaurant's id. Return list of ```Menu```s if the restaurant exists.
 ```
 {
