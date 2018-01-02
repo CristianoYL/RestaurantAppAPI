@@ -84,7 +84,7 @@ make sure you substitute <your_ip> with your real IP. If you use ```localhost```
 
 Deploying on Heroku is recommended for personal projects or small businesses. Generally, it requires a minimal knowledge on server deployment and configurations, and it can be free. Thus I deployed most of my personal projects here for long term.
 
-You can set up Database such as PostgreSQL on Heroku easily using their Add-ons, and Heroku will configure it for you and make sure you have access to the database from your server.
+You can set up Database such as PostgreSQL on Heroku easily using their Add-ons, and Heroku will configure it for you and make sure you have access to the database from your server. [A detailed tutorial on how to deploy your app onto Heroku is shown here](https://github.com/CristianoYL/Tutorials/blob/master/Heroku%20Tutorial.md)
 
 However, if you have sufficient knowledge or growing demand on your server, you may find Heroku less capable. And it's time you consider switching to other cloud hosting services such as AWS.
 
@@ -97,7 +97,7 @@ AWS is designed for industry level products, and might seem less user-friendly f
 - You can config Retention Period as well as Backup frequency to minimize your lost.
 - You can use Security Groups for access control. And you can even config Virtual Private Cloud(VPC) to make your database isolated from public network.
 
-These features become important when you're to launch your project for production. If you are looking for more information on this topic, you can check out this tutorial: [How to deploy Flask app using uWSGI and nginx](https://github.com/CristianoYL/rest-api-sections/blob/master/guides/How%20To%20Deploy%20Flask%20App%20Using%20uWSGI%20and%20Nginx.md)
+These features become important when you're to launch your project for production. If you are looking for more information on this topic, you can check out this tutorial: [How To Deploy Python App Using uWSGI And Nginx](https://github.com/CristianoYL/Tutorials/blob/master/How%20To%20Deploy%20Python%20App%20Using%20uWSGI%20And%20Nginx.md)
 
 # Security
 
