@@ -15,6 +15,8 @@ class RestaurantModel(db.Model):
     promo = db.Column(db.String(100))
     phone = db.Column(db.String(20))
 
+    menu =  db.relationship('MenuModel',lazy='dynamic')
+
 
     def __init__(self,_id,name,fee,limit,address,openTime,closeTime,isOpen,logo,promo,phone):
         self.id = _id
@@ -41,7 +43,8 @@ class RestaurantModel(db.Model):
             'isOpen': self.isOpen,
             'logo': self.logo,
             'promo': self.promo,
-            'phone': self.phone
+            'phone': self.phone,
+            'menu': [menu.json() for menu in self.menu.all()]
         }
 
     @classmethod
@@ -55,7 +58,6 @@ class RestaurantModel(db.Model):
     @classmethod
     def find_by_name(cls,name):
         return cls.query.filter_by(name=name).first()
-
 
     def save_to_db(self):   # upsert
         db.session.add(self)

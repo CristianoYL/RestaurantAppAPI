@@ -46,7 +46,7 @@ api.add_resource(RestaurantByID,'/restaurant/id/<int:id>')
 
 api.add_resource(Menu,'/menu')
 api.add_resource(MenuByID,'/menu/id/<int:id>')
-api.add_resource(MenuByRestaurant,'/menu/restaurant/<int:rid>')
+api.add_resource(MenuByRestaurant,'/menu/restaurant/<int:restaurantID>')
 
 api.add_resource(EphemeralKey, '/transaction/ephemeral_key')
 
@@ -64,4 +64,4 @@ if __name__ == '__main__' :
     def create_tables():
         db.create_all()
 
-    app.run(debug=True)
+    app.run(port=8002,debug=True)

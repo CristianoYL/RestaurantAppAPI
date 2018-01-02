@@ -4,7 +4,7 @@ class MenuModel(db.Model):
     __tablename__ = 'menu'
 
     id = db.Column(db.Integer, primary_key=True)
-    rid = db.Column(db.Integer, db.ForeignKey('restaurant.id'))
+    restaurantID = db.Column(db.Integer, db.ForeignKey('restaurant.id'))
     name = db.Column(db.String(30), unique=True)
     price = db.Column(db.Float(precision=2))
     category = db.Column(db.String(20))
@@ -13,9 +13,13 @@ class MenuModel(db.Model):
     isAvailable = db.Column(db.Boolean)
     isRecommended = db.Column(db.Boolean)
 
-    def __init__(self,_id,rid,name,price,category,description,spicy,isAvailable,isRecommended):
+    restaurant = db.relationship('RestaurantModel')
+
+
+
+    def __init__(self,_id,restaurantID,name,price,category,description,spicy,isAvailable,isRecommended):
         self.id = _id
-        self.rid=rid
+        self.restaurantID=restaurantID
         self.name = name
         self.price = price
         self.category = category
@@ -27,7 +31,7 @@ class MenuModel(db.Model):
     def json(self):
         return {
             'id': self.id,
-            'rid': self.rid,
+            'restaurantID': self.restaurantID,
             'name': self.name,
             'price': self.price,
             'category': self.category,
@@ -46,20 +50,16 @@ class MenuModel(db.Model):
         return cls.query.filter_by(id=mid).first()
 
     @classmethod
-    def find_by_restaurant(cls,rid):
-        return cls.query.filter_by(rid=rid)
+    def find_by_name(cls,restaurantID,name):
+        return cls.query.filter_by(restaurantID=restaurantID,name=name).first()
 
     @classmethod
-    def find_by_name(cls,rid,name):
-        return cls.query.filter_by(rid=rid,name=name).first()
+    def find_like_name(cls,restaurantID,name):
+        return cls.query.filter_by(restaurantID=restaurantID).filter(cls.name.like(mid))
 
     @classmethod
-    def find_like_name(cls,rid,name):
-        return cls.query.filter_by(rid=rid).filter(cls.name.like(mid))
-
-    @classmethod
-    def find_by_category(cls,rid,category):
-        return cls.query.filter_by(rid=rid,category=category)
+    def find_by_category(cls,restaurantID,category):
+        return cls.query.filter_by(restaurantID=restaurantID,category=category)
 
     def save_to_db(self):   ## upsert
         db.session.add(self)

@@ -13,7 +13,7 @@ INTERNAL_ERROR = 'Internal server error! {}'
 
 class Menu(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('rid', type=int, required=True, help=BLANK_ERROR.format("Restaurant ID"))
+    parser.add_argument('restaurantID', type=int, required=True, help=BLANK_ERROR.format("Restaurant ID"))
     parser.add_argument('name', type=str, required=True, help=BLANK_ERROR.format("Name"))
     parser.add_argument('price', type=float, required=True, help=BLANK_ERROR.format("Price"))
     parser.add_argument('category', type=str, required=True, help=BLANK_ERROR.format("Category"))
@@ -40,8 +40,8 @@ class Menu(Resource):
             return {'message': UNAUTH_ERROR}, 401
 
         data = self.parser.parse_args()
-        if MenuModel.find_by_name(data['rid'], data['name']):
-            return {'message': ALREADY_EXISTS_ERROR.format(data['name'], data['rid'])}, 400
+        if MenuModel.find_by_name(data['restaurantID'], data['name']):
+            return {'message': ALREADY_EXISTS_ERROR.format(data['name'], data['restaurantID'])}, 400
 
         # set default values if not specified
         if data['spicy'] is None:
@@ -116,8 +116,9 @@ class MenuByID(Resource):
 
 class MenuByRestaurant(Resource):
 
-    def get(self, rid):
-        if RestaurantModel.find_by_id(rid) is None:
-            return {'message': 'Restaurant <id:{}> not found.'.format(rid)}, 404
-        menu_list = [menu.json() for menu in MenuModel.find_by_restaurant(rid)]
+    def get(self, restaurantID):
+        restaurant = RestaurantModel.find_by_id(restaurantID)
+        if restaurant is None:
+            return {'message': 'Restaurant <id:{}> not found.'.format(restaurantID)}, 404
+        menu_list = [menu.json() for menu in restaurant.menu]
         return {'menus': menu_list}, 200
