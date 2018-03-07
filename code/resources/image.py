@@ -7,6 +7,7 @@ import traceback
 
 from models.image import MenuImageModel
 from models.menu import MenuModel
+from utils.privilege import is_admin
 
 BLANK_ERROR = '{} cannot be blank.'
 UNAUTH_ERROR = 'Action unauthorized. Admin privilege required.'
@@ -31,8 +32,8 @@ class MenuImage(Resource):
         """
         data = self.parser.parse_args()
 
-        # user = current_identity
-        # TODO: add user privilege check
+        if not is_admin(current_identity):
+            return {'message': 'Admin privilege not satisfied.'}, 401
 
         menu = MenuModel.find_by_id(menu_id)
         if not menu:
@@ -78,8 +79,9 @@ class MenuImage(Resource):
         This endpoint is used to delete the requested image under the user's folder.
         It uses the JWT to retrieve user information.
         """
-        # user = current_identity
-        # TODO: add admin privilege check
+        if not is_admin(current_identity):
+            return {'message': 'Admin privilege not satisfied.'}, 401
+
         menu_image = MenuImageModel(menu_id)
 
         filename = menu_image.find_image_for_menu()

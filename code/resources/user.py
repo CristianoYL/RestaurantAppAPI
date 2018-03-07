@@ -4,6 +4,7 @@ from flask_jwt import jwt_required, current_identity
 import os, traceback, stripe
 
 from models.user import UserModel
+from utils.privilege import is_admin
 
 BLANK_ERROR = '{} cannot be blank.'
 UNAUTH_ERROR = 'Action unauthorized. Admin privilege required.'
@@ -20,11 +21,8 @@ class User(Resource):
 
     @jwt_required()
     def get(self):  # view all users
-        user = current_identity
-        # TODO: implement admin auth method
-        # now assume only user.id = 1 indicates admin
-        if user.id != 1:
-            return {'message': UNAUTH_ERROR}, 401
+        if not is_admin(current_identity):
+            return {'message': 'Admin privilege not satisfied.'}, 401
 
         users = []
         result = UserModel.find_all()
@@ -98,11 +96,8 @@ class UserByID(Resource):
 
     @jwt_required()
     def get(self, userID):  # find user by id
-        user = current_identity
-        # TODO: implement admin auth method
-        # now assume only user.id = 1 indicates admin
-        if user.id != 1:
-            return {'message': UNAUTH_ERROR}, 401
+        if not is_admin(current_identity):
+            return {'message': 'Admin privilege not satisfied.'}, 401
 
         user = UserModel.find_by_id(userID)
         if user:
@@ -110,23 +105,19 @@ class UserByID(Resource):
         return {'message': NOT_FOUND_ERROR.format(userID)}, 404
 
     @jwt_required()
-    def delete(self, user_id):
-        user = current_identity
-        # TODO: implement admin auth method
-        # now assume only user.id = 1 indicates admin
-        if user.id != 1:
-            return {'message': UNAUTH_ERROR}, 401
+    def delete(self, userID):
+        if not is_admin(current_identity):
+            return {'message': 'Admin privilege not satisfied.'}, 401
 
-        user = UserModel.find_by_id(user_id)
+        user = UserModel.find_by_id(userID)
         if not user:
-            return {'message': NOT_FOUND_ERROR
-                .format(user_id)}, 404
+            return {'message': NOT_FOUND_ERROR.format(userID)}, 404
         try:
             user.delete_from_db()
         except:
             traceback.print_exc()
             return {
                        'message': INTERNAL_ERROR.format('Failed to delete user<id:{}>.'
-                                                        .format(user_id))
+                                                        .format(userID))
                    }, 500
         return {'message': 'User deleted!'}, 200

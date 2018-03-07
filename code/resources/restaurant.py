@@ -3,6 +3,7 @@ from flask_jwt import jwt_required, current_identity
 import traceback
 
 from models.restaurant import RestaurantModel
+from utils.privilege import is_admin
 
 BLANK_ERROR = '{} cannot be blank.'
 NOT_FOUND_ERROR = 'Restaurant {} not found.'
@@ -64,11 +65,8 @@ class RestaurantByID(Resource):
 
     @jwt_required()
     def put(self, id):  # update a restaurant
-        user = current_identity
-        # TODO: implement admin auth method
-        # now assume only user.id = 1 indicates admin
-        if user.id != 1:
-            return {'message': UNAUTH_ERROR}, 401
+        if not is_admin(current_identity):
+            return {'message': 'Admin privilege not satisfied.'}, 401
 
         data = self.parser.parse_args()
         restaurant = RestaurantModel.find_by_id(id)
@@ -100,6 +98,5 @@ class RestaurantByID(Resource):
             restaurant.save_to_db()
         except:
             traceback.print_exc()
-            return {'message': INTERNAL_ERROR
-                .format('Failed to update restaurant.')}, 500
+            return {'message': INTERNAL_ERROR.format('Failed to update restaurant.')}, 500
         return restaurant.json(), 200

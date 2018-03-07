@@ -4,6 +4,7 @@ import traceback
 
 from models.menu import MenuModel
 from models.restaurant import RestaurantModel
+from utils.privilege import is_admin
 
 BLANK_ERROR = '{} cannot be blank.'
 UNAUTH_ERROR = 'Action unauthorized. Admin privilege required.'
@@ -26,20 +27,15 @@ class Menu(Resource):
 
     @jwt_required()
     def get(self):  # get all menus, for testing only
-        user = current_identity
-        # TODO: implement admin auth method
-        # now assume only user.id = 1 indicates admin
-        if user.id != 1:
-            return {'message': UNAUTH_ERROR}, 401
+        if not is_admin(current_identity):
+            return {'message': 'Admin privilege not satisfied.'}, 401
+
         return {'menus': [menu.json() for menu in MenuModel.find_all()]}, 200
 
     @jwt_required()
     def post(self):  # post a new menu item
-        user = current_identity
-        # TODO: implement admin auth method
-        # now assume only user.id = 1 indicates admin
-        if user.id != 1:
-            return {'message': UNAUTH_ERROR}, 401
+        if not is_admin(current_identity):
+            return {'message': 'Admin privilege not satisfied.'}, 401
 
         data = self.parser.parse_args()
         if MenuModel.find_by_name(data['restaurantID'], data['name']):
@@ -83,11 +79,8 @@ class MenuByID(Resource):
 
     @jwt_required()
     def put(self, id):
-        user = current_identity
-        # TODO: implement admin auth method
-        # now assume only user.id = 1 indicates admin
-        if user.id != 1:
-            return {'message': UNAUTH_ERROR}, 401
+        if not is_admin(current_identity):
+            return {'message': 'Admin privilege not satisfied.'}, 401
 
         menu = MenuModel.find_by_id(id)
         if not menu:
