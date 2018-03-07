@@ -1,5 +1,6 @@
 from db import db
 
+
 class MenuModel(db.Model):
     __tablename__ = 'menu'
 
@@ -12,14 +13,13 @@ class MenuModel(db.Model):
     spicy = db.Column(db.Integer)
     isAvailable = db.Column(db.Boolean)
     isRecommended = db.Column(db.Boolean)
+    image = db.Column(db.String(2000))
 
     restaurant = db.relationship('RestaurantModel')
 
-
-
-    def __init__(self,_id,restaurantID,name,price,category,description,spicy,isAvailable,isRecommended):
+    def __init__(self, _id, restaurantID, name, price, category, description, spicy, isAvailable, isRecommended, image):
         self.id = _id
-        self.restaurantID=restaurantID
+        self.restaurantID = restaurantID
         self.name = name
         self.price = price
         self.category = category
@@ -27,6 +27,7 @@ class MenuModel(db.Model):
         self.spicy = spicy
         self.isAvailable = isAvailable
         self.isRecommended = isRecommended
+        self.image = image
 
     def json(self):
         return {
@@ -38,7 +39,8 @@ class MenuModel(db.Model):
             'description': self.description,
             'spicy': self.spicy,
             'isAvailable': self.isAvailable,
-            'isRecommended': self.isRecommended
+            'isRecommended': self.isRecommended,
+            'image': self.image
         }
 
     @classmethod
@@ -46,25 +48,25 @@ class MenuModel(db.Model):
         return cls.query.all()
 
     @classmethod
-    def find_by_id(cls,mid):
+    def find_by_id(cls, mid):
         return cls.query.filter_by(id=mid).first()
 
     @classmethod
-    def find_by_name(cls,restaurantID,name):
-        return cls.query.filter_by(restaurantID=restaurantID,name=name).first()
+    def find_by_name(cls, restaurantID, name):
+        return cls.query.filter_by(restaurantID=restaurantID, name=name).first()
 
     @classmethod
-    def find_like_name(cls,restaurantID,name):
-        return cls.query.filter_by(restaurantID=restaurantID).filter(cls.name.like(mid))
+    def find_like_name(cls, restaurantID, name):
+        return cls.query.filter_by(restaurantID=restaurantID).filter(cls.name.like(name))
 
     @classmethod
-    def find_by_category(cls,restaurantID,category):
-        return cls.query.filter_by(restaurantID=restaurantID,category=category)
+    def find_by_category(cls, restaurantID, category):
+        return cls.query.filter_by(restaurantID=restaurantID, category=category)
 
-    def save_to_db(self):   ## upsert
+    def save_to_db(self):  # upsert
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):   ## delete
+    def delete_from_db(self):  # delete
         db.session.delete(self)
         db.session.commit()

@@ -1,5 +1,5 @@
-from flask_restful import Resource,reqparse
-from flask_jwt import jwt_required,current_identity
+from flask_restful import Resource, reqparse
+from flask_jwt import jwt_required, current_identity
 import os, traceback, stripe
 
 from models.user import UserModel
@@ -10,7 +10,8 @@ NOT_VALID_ERROR = 'User {} is not valid'
 DUPLICATE_ERROR = 'Customer already created'
 NULL_CUSTOMER_ERROR = 'Customer not yet created'
 INTERNAL_ERROR = 'Internal server error! Failed to {}.'
-SUCCESS = 'Customer sucessfully {}'
+SUCCESS = 'Customer successfully {}'
+
 
 class EphemeralKey(Resource):
     parser = reqparse.RequestParser()
@@ -34,9 +35,9 @@ class EphemeralKey(Resource):
         except:
             traceback.print_exc()
             return {
-                    'message' : INTERNAL_ERROR
-                        .format("retrieve Stripe Customer info.")
-                    },500
+                       'message': INTERNAL_ERROR
+                           .format("retrieve Stripe Customer info.")
+                   }, 500
 
         if not ephemeral_key:
             return {'message': NULL_CUSTOMER_ERROR.format('create ephemeral key')}, 404

@@ -6,10 +6,11 @@ from models.menu import MenuModel
 from models.restaurant import RestaurantModel
 
 BLANK_ERROR = '{} cannot be blank.'
-UNAUTH_ERROR = 'Action unauthorized. Admin previlege required.'
+UNAUTH_ERROR = 'Action unauthorized. Admin privilege required.'
 NOT_FOUND_ERROR = 'Menu item <{}> not found.'
 ALREADY_EXISTS_ERROR = 'Menu item <{}> already exists for restaurant <{}>.'
 INTERNAL_ERROR = 'Internal server error! {}'
+
 
 class Menu(Resource):
     parser = reqparse.RequestParser()
@@ -21,6 +22,7 @@ class Menu(Resource):
     parser.add_argument('spicy', type=int, required=False)
     parser.add_argument('isAvailable', type=bool, required=False)
     parser.add_argument('isRecommended', type=bool, required=False)
+    parser.add_argument('image', type=str, required=False)
 
     @jwt_required()
     def get(self):  # get all menus, for testing only
@@ -71,6 +73,7 @@ class MenuByID(Resource):
     parser.add_argument('spicy', type=int, required=False)
     parser.add_argument('isAvailable', type=bool, required=False)
     parser.add_argument('isRecommended', type=bool, required=False)
+    parser.add_argument('image', type=str, required=False)
 
     def get(self, id):
         menu = MenuModel.find_by_id(id)
@@ -92,20 +95,23 @@ class MenuByID(Resource):
 
         # update with the given params
         data = self.parser.parse_args()
-        if data['name']:
-            menu.name = data['name']
-        if data['price']:
-            menu.price = data['price']
-        if data['category']:
-            menu.category = data['category']
-        if data['description']:
-            menu.description = data['description']
-        if data['spicy']:
-            menu.spicy = data['spicy']
-        if data['isAvailable'] is not None:
-            menu.isAvailable = data['isAvailable']
-        if data['isRecommended'] is not None:
-            menu.isRecommended = data['isRecommended']
+        # if data['name']:
+        #     menu.name = data['name']
+        # if data['price']:
+        #     menu.price = data['price']
+        # if data['category']:
+        #     menu.category = data['category']
+        # if data['description']:
+        #     menu.description = data['description']
+        # if data['spicy']:
+        #     menu.spicy = data['spicy']
+        # if data['isAvailable'] is not None:
+        #     menu.isAvailable = data['isAvailable']
+        # if data['isRecommended'] is not None:
+        #     menu.isRecommended = data['isRecommended']
+        for key in data.keys():
+            if data[key] is not None:
+                setattr(menu, key, data[key])
         try:
             menu.save_to_db()
         except:

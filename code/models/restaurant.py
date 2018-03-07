@@ -1,5 +1,6 @@
 from db import db
 
+
 class RestaurantModel(db.Model):
     __tablename__ = 'restaurant'
 
@@ -15,10 +16,9 @@ class RestaurantModel(db.Model):
     promo = db.Column(db.String(100))
     phone = db.Column(db.String(20))
 
-    menu =  db.relationship('MenuModel',lazy='dynamic')
+    menu = db.relationship('MenuModel', lazy='dynamic')
 
-
-    def __init__(self,_id,name,fee,limit,address,openTime,closeTime,isOpen,logo,promo,phone):
+    def __init__(self, _id, name, fee, limit, address, openTime, closeTime, isOpen, logo, promo, phone):
         self.id = _id
         self.name = name
         self.fee = fee
@@ -52,17 +52,17 @@ class RestaurantModel(db.Model):
         return cls.query.all()
 
     @classmethod
-    def find_by_id(cls,id):
+    def find_by_id(cls, id):
         return cls.query.filter_by(id=id).first()
 
     @classmethod
-    def find_by_name(cls,name):
+    def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
 
-    def save_to_db(self):   # upsert
+    def save_to_db(self):  # upsert
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):   # delete
+    def delete_from_db(self):  # delete
         db.session.delete(self)
         db.session.commit()
