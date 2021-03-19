@@ -9,7 +9,7 @@ Flask-SQLAlchemy==2.2
 Flask-Uploads==0.2.1
 idna==2.6
 itsdangerous==0.24
-Jinja2==2.9.6
+Jinja2==2.11.3
 MarkupSafe==1.0
 psycopg2==2.7.3
 PyJWT==1.4.2
